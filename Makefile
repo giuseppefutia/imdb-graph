@@ -1,8 +1,17 @@
 PIP=venv/bin/pip
 PYTHON=venv/bin/python
 
+################
+# --- Init --- #
+################
+
 init:
 	$(PIP) install -r requirements.lock
+
+
+##################
+# --- Import --- #
+##################
 
 IMPORTERS = name title_akas title_principals title_episode title_crew title_ratings
 
@@ -32,3 +41,10 @@ import-all:
 	total_min=$$((total_time / 60)); \
 	total_sec=$$((total_time % 60)); \
 	echo "🎉 All imports completed in ⏱  $${total_min}m $${total_sec}s!"
+
+
+#################################
+# --- Data Quality Analysis --- #
+#################################
+data-quality-analysis:
+	PYTHONPATH=$(PWD) $(PYTHON) analyzer/data_analyzer.py
