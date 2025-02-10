@@ -8,6 +8,12 @@ PYTHON=venv/bin/python
 init:
 	$(PIP) install -r requirements.lock
 
+####################
+# --- Download --- #
+####################
+
+download:
+	PYTHONPATH=$(PWD) $(PYTHON) downloader/download.py
 
 ##################
 # --- Import --- #
