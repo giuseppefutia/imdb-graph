@@ -64,3 +64,4 @@ if __name__ == '__main__':
 
     logging.info("Importing title crew records...")
     crew_importer.import_crew(crew_file)
+    crew_importer.close()

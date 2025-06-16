@@ -35,6 +35,7 @@ class TitleImporter(PandasImporter):
     def import_titles(self, titles_file):
         query = """
         UNWIND $batch as item
+        
         MERGE (title:Title {id: item.tconst})
         SET title.sources = apoc.coll.toSet(coalesce(title.sources, []) + "title.basics.tsv"),
             title.name = item.primaryTitle,
@@ -51,6 +52,7 @@ class TitleImporter(PandasImporter):
                     WHEN item.startYear =~ '\\d+' THEN toInteger(item.startYear)
                 ELSE NULL END
         WITH title, item
+        
         UNWIND item.genres as genreName
         MERGE (genre:Genre {name: genreName})
         MERGE (title)-[:HAS_GENRE]->(genre)

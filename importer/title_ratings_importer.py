@@ -42,3 +42,4 @@ if __name__ == '__main__':
 
     logging.info("Importing title ratings records...")
     ratings_importer.import_ratings(ratings_file)
+    ratings_importer.close()

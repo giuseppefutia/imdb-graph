@@ -37,8 +37,10 @@ class TitlePrincipalsImporter(PandasImporter):
         UNWIND $batch as item
         MERGE (title:Title {id: item.tconst})
         SET title.sources = apoc.coll.toSet(coalesce(title.sources, []) + "title.principals.tsv")
+        
         MERGE (person:Person {id: item.nconst})
         SET person.sources = apoc.coll.toSet(coalesce(person.sources, []) + "title.principals.tsv")
+        
         MERGE (person)-[worked_in:WORKED_IN]->(title)
         SET worked_in.ordering = toInteger(item.ordering),
             worked_in.category = item.category,
@@ -61,3 +63,4 @@ if __name__ == '__main__':
     
     logging.info("Importing title principals records...")
     principals_importer.import_principals(principals_file)
+    principals_importer.close()

@@ -27,8 +27,10 @@ class TitleEpisodeImporter(PandasImporter):
         UNWIND $batch as item
         MERGE (episode:Title {id: item.tconst})
         SET episode.sources = apoc.coll.toSet(coalesce(episode.sources, []) + "title.episode.tsv")
+        
         MERGE (parent:Title {id: item.parentTconst})
         SET parent.sources = apoc.coll.toSet(coalesce(parent.sources, []) + "title.episode.tsv")
+        
         MERGE (episode)-[r:PART_OF]->(parent)
         SET r.seasonNumber = 
             CASE WHEN item.seasonNumber <> '\\N' THEN toInteger(item.seasonNumber)
@@ -48,3 +50,4 @@ if __name__ == '__main__':
 
     logging.info("Importing episode records...")
     episode_importer.import_episodes(episodes_file)
+    episode_importer.close()

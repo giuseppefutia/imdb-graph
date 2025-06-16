@@ -45,10 +45,12 @@ class NameImporter(PandasImporter):
                 CASE WHEN item.deathYear =~ '\\d+' THEN toInteger(item.deathYear)
                 ELSE NULL END
         WITH person, item
+        
         UNWIND item.primaryProfession as professionName
         MERGE (profession:Profession {name: professionName})
         MERGE (person)-[:HAS_PROFESSION]->(profession)
         WITH person, item
+        
         UNWIND item.knownForTitles as titleId
         MERGE (title:Title {id: titleId})
         SET title.sources = apoc.coll.toSet(coalesce(title.sources, []) + "name.basics.tsv")
